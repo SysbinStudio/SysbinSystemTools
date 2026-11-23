@@ -73,7 +73,7 @@ END
 /////////////////////////////////////////////////////////////////////////////
 // Hosts page
 //
-IDD_PAGE_HOSTS DIALOGEX 0, 0, 500, 360
+IDD_PAGE_HOSTS DIALOGEX 0, 0, 500, 372
 STYLE DS_SETFONT | WS_CHILD | WS_CLIPSIBLINGS
 FONT 9, "Microsoft YaHei UI", 0, 0, 0x86
 BEGIN
@@ -87,7 +87,8 @@ BEGIN
     AUTOCHECKBOX    "自动解析域名 IP（DoH，绕过本地 DNS 污染）", IDC_HOSTS_AUTO, 10, 208, 240, 16
     LTEXT           "DoH 服务器:", IDC_STATIC, 256, 209, 66, 14
     COMBOBOX        IDC_HOSTS_DOH, 322, 206, 170, 90, CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "自定义条目（每行一条：IP 域名，例如 1.2.3.4 example.com；IP 写 auto 表示自动解析）", IDC_HOSTS_HINT, 10, 232, 480, 16
-    EDITTEXT        IDC_HOSTS_CUSTOM, 8, 250, 484, 70, ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL | WS_BORDER | WS_TABSTOP
-    CTEXT           "", IDC_HOSTS_STATUS, 8, 330, 484, 20, SS_SUNKEN | NOT WS_GROUP
+    AUTOCHECKBOX    "实时侦测 DNS 变化并自动更新 Hosts（每 60 秒检查一次）", IDC_HOSTS_WATCH, 10, 228, 480, 16
+    LTEXT           "自定义条目（每行一条：IP 域名，例如 1.2.3.4 example.com；IP 写 auto 表示自动解析）", IDC_HOSTS_HINT, 10, 250, 480, 16
+    EDITTEXT        IDC_HOSTS_CUSTOM, 8, 268, 484, 70, ES_MULTILINE | ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL | WS_BORDER | WS_TABSTOP
+    CTEXT           "", IDC_HOSTS_STATUS, 8, 344, 484, 20, SS_SUNKEN | NOT WS_GROUP
 END
