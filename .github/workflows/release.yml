@@ -1,0 +1,53 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup MSYS2 MinGW-w64
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-python
+
+      - name: Generate icon
+        shell: msys2 {0}
+        run: python tools/make_icon.py
+
+      - name: Build executable
+        shell: msys2 {0}
+        run: |
+          mkdir -p build
+          windres -c 65001 -I . -i SysbinSystemTools.rc -o build/sysbin_res.o
+          g++ -std=c++17 -municode -mwindows -DUNICODE -D_UNICODE -D_WIN32_WINNT=0x0601 -O2 -w \
+            Main.cpp Common.cpp MemoryPage.cpp DiskPage.cpp HostsPage.cpp \
+            build/sysbin_res.o \
+            -lcomctl32 -lshell32 -lpsapi -liphlpapi -lws2_32 -lwinhttp \
+            -o build/SysbinSystemTools.exe
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0
+          name: Sysbin System Tools v1.0
+          body: |
+            Sysbin System Tools — memory optimization, disk cleanup, and Hosts acceleration with live DoH DNS resolution.
+
+            - 内存释放 / 硬盘清理 / Hosts 加速（DoH 实时解析）
+            - 内置“立即查询”按钮与 TCP 443 延迟回退探测
+            - 纯 C++ + Win32 API，无第三方运行库
+          files: build/SysbinSystemTools.exe
