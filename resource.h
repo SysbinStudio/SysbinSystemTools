@@ -52,6 +52,7 @@
 #define IDC_HOSTS_AUTO              252
 #define IDC_HOSTS_DOH               253
 #define IDC_HOSTS_QUERY             254
+#define IDC_HOSTS_WATCH             255
 
 // Resources
 #define IDI_SYSBIN                  300
