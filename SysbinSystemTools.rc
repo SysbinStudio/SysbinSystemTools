@@ -57,7 +57,7 @@ BEGIN
     LTEXT           "清理磁盘：", IDC_STATIC, 16, 11, 56, 14
     COMBOBOX        IDC_DISK_DRIVE, 76, 8, 164, 90, CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     CTEXT           "扫描结果：--", IDC_DISK_SUMMARY, 248, 8, 236, 18, SS_SUNKEN
-    AUTOCHECKBOX    "自动识别垃圾文件（读取文件内容，识别构建产物/缓存/调试符号等，扫描所选磁盘）", IDC_CK_JUNKSCAN, 16, 32, 468, 18
+    AUTOCHECKBOX    "自动识别垃圾文件（读内容识别构建产物；跳过需联网恢复的依赖/工具目录）", IDC_CK_JUNKSCAN, 16, 32, 468, 18
     AUTOCHECKBOX    "用户临时文件 (%TEMP%)", IDC_CK_TEMP, 16, 56, 222, 18
     AUTOCHECKBOX    "系统临时文件 (Windows\\Temp)", IDC_CK_WINTEMP, 248, 56, 236, 18
     AUTOCHECKBOX    "回收站", IDC_CK_RECYCLE, 16, 80, 222, 18
