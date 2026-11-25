@@ -29,11 +29,12 @@
   - COFF 目标文件（`.obj`，按机器码特征）
   - Java class 字节码（`CA FE BA BE`）、崩溃转储（`MDMP`）
   - PE 可执行文件 / DLL（有 `MZ` + `PE\0\0`）——只在构建产物目录内才当垃圾
-  - ZIP 包（`.jar`/`.nupkg` 等）——只在构建产物目录内才当垃圾
-- **构建产物目录**：路径中含 `obj`、`bin`、`Debug`、`Release`、`x64`、`node_modules`、`__pycache__`、`.vs`、`target`、`dist`、`build`、`packages` 等目录时，目录内的二进制中间文件会结合内容确认后判定为垃圾。
+  - ZIP 包（`.jar` 等）——只在构建产物目录内才当垃圾；下载的 `.nupkg` 位于依赖缓存，会整体跳过
+- **构建产物目录**：路径中含 `obj`、`Debug`、`Release`、`x64`、`__pycache__`、`.vs`、`target`、`dist`、`build` 等目录时，目录内的二进制中间文件会结合内容确认后判定为垃圾。`bin` 目录只有在**同级存在项目文件**（`.sln` / `.csproj` / `package.json` / `CMakeLists.txt` / `Cargo.toml` 等）时才算构建产物，避免误伤 `~/.local/bin` 这类工具目录。
 - **明确的垃圾扩展名**：`.tmp` `.temp` `.dmp` `.etl` `.cache` `.obj` `.pdb` `.ilk` `.tlog` `.pyc` 等；Office 锁文件 `~$*`、`Thumbs.db`。
 - **安全护栏**：源代码、文档、图片、音视频、压缩包等扩展名**永不删除**（即使在构建目录内）；刻意不把 `.log` / `.bak` 当垃圾。
-- 自动跳过 `Windows`、`Program Files`、`ProgramData`、`System Volume Information`、`$Recycle.Bin` 等系统与程序目录，以及已被固定项目覆盖的路径（避免重复统计），并跳过所有目录联接/符号链接，防止跑出目标磁盘。
+- **需联网恢复的目录完整跳过**：`.nuget`、`.local`、`.m2`、`.cargo`、`.gradle`、`.npm`、`.yarn`、`node_modules`、虚拟环境等依赖缓存与工具安装目录一律不进入——这些删了必须重新下载，不属于"垃圾"。`uv.exe` / `uvx.exe`、NuGet 包缓存里的 DLL/NUPKG 因此不会被列出。
+- 自动跳过 `Windows`、`Program Files`、`ProgramData`、`System Volume Information`、`$Recycle.Bin` 等系统与程序目录，以及已被固定项目覆盖的路径（避免重复统计），并跳过所有目录联接/符号链接，防止跑出目标磁盘。日志会显示本次跳过了多少个受保护目录。
 - 上限 200 万个已检查文件 / 30 万个命中文件 / 20 层深度；扫描与清理在后台线程执行并实时显示进度，不卡界面。
 
 先点“扫描”预览：日志会**按识别类型分类统计**（例如“内容：PDB 调试符号 1.2 GB”），并列出前 20 个带类型标注的具体文件路径，确认后再点“开始清理”。被占用的文件会自动跳过，不会造成系统异常。
