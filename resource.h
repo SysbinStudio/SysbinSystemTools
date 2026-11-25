@@ -38,6 +38,8 @@
 #define IDC_DISK_SELECTNONE         231
 #define IDC_DISK_CLEARLOG           232
 #define IDC_DISK_LOG                233
+#define IDC_CK_JUNKSCAN             234
+#define IDC_DISK_DRIVE              235
 
 // Hosts page
 #define IDC_HOSTS_LIST              240
